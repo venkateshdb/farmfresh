@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Login</title>
+
+  <style>
+    :root {
+
+      --gradient-color-first: rgb(247, 211, 185);
+      --gradient-color-second: rgb(234, 144, 182);
+
+      --button-color: rgb(36, 146, 248);
+      --link: rgb(36, 146, 248);
+      --white: rgb(255, 250, 245);
+      --grey: rgb(219, 229, 238);
+
+    }
+
+    @font-face {
+      src: url("static/fonts/sans.woff2");
+      font-family: 'sans';
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans;
+    }
+
+    #grid__container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 100vh;
+    }
+
+
+    #grid__container .login__container {
+      background-color: var(--white);
+      padding-top: 5em;
+      padding-left: 4em;
+    }
+
+    #grid__container .form__heading {
+      font-weight: 300;
+      font-size: 2em;
+      margin-bottom: 1.5em;
+    }
+
+    .txt:focus {
+      border-bottom-color: var(--link);
+      outline: none;
+    }
+
+    #grid__container .txt {
+      display: block;
+      border-top-width: 0;
+      border-right-width: 0;
+      border-left-width: 0;
+      padding: 1em;
+      border-bottom-width: 2px !important;
+      margin-bottom: 3em;
+      width: 50%;
+      background-color: var(--white);
+    }
+
+
+    ::-webkit-input-placeholder {
+      font-size: 13px;
+      color: rgb(19, 52, 82);
+      letter-spacing: 2px;
+      font-weight: 500;
+    }
+
+
+    .login__container .btn {
+      font-weight: 500;
+      background-color: var(--button-color);
+      color: rgb(255, 255, 255);
+      padding: 14px;
+      font-size: 13px;
+      letter-spacing: 2px;
+      width: 9em;
+      margin: 16px 0 16px 0;
+      border-radius: 60px;
+      border-style: none;
+      text-align: center;
+      display: block;
+      cursor: pointer;
+    }
+
+    .login__container p,
+    li {
+      display: inline-block;
+      color: rgb(29, 25, 25);
+    }
+
+
+    a>li {
+      list-style: none;
+      color: var(--link) !important;
+      text-decoration: none;
+      font-weight: 500;
+      margin: 24px 0 22px 0;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+
+    #image__container {
+      background: url("static/images/farm.jpg");
+      display: grid;
+      background-size: cover;
+
+    }
+
+    #image__container>img {
+      align-self: center;
+      position: relative;
+      left: 24%;
+      right: 50%;
+    }
+
+
+    @media only screen and (max-width:850px) {
+      body {
+        background-color: var(--white);
+      }
+
+      #grid__container {
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-items: center;
+      }
+
+      #image__container {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="grid__container">
+    {{error}}
+    <section class="login__container">
+      <h2 class="form__heading">Register Your Seller Account Today</h2>
+      <form enctype="multipart/form-data" accept="utf=8" action="/seller" method="POST">
+
+        <input type="text" class="txt" placeholder="Full Name" name="name">
+        <input type="text" class="txt" placeholder="City" name="city">
+        <input type="text" class="txt" placeholder="State" name="state">
+        <input type="address" class="txt" placeholder="address" name="address">
+        <input type="tel" class="txt" placeholder="Phone number" name="phone">
+        <input type="password" class="txt" placeholder="Password" name="password">
+        <input type="file" class="img_upload" name="seller_img">
+
+
+        <a href="/forgot_password">
+          <li>FORGOT PASSWORD?</li>
+        </a>
+
+        <button class="btn" value="REGISTER">REGISTER</button>
+
+        <p>Have an account then?</p>
+        <a href="/login">
+          <li>&nbsp;&nbsp;&nbsp;LOGIN</li>
+        </a>
+
+      </form>
+    </section>
+
+    <section id="image__container">
+
+    </section>
+
+
+  </div>
+</body>
+
+</html>

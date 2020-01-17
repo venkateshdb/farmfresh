@@ -1,3 +1,6 @@
 *.env
 *.db
+*.pyc
+migrations/*
+flask_session/*
 __pycache__/*

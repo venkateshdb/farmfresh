@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>FarmFresh - built for farmers</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width" intial-scale="1">
+</head>
+
+<body>
+
+	<header class="site-header">
+		<div class="site-header__inner">
+			<div class="branding">
+				<a href="/">
+					<img src="static/logo/farmfreshlogo.png">
+				</a>
+			</div>
+
+			<div class="search__bar">
+				<input type="search" name="search">
+			</div>
+
+			<nav class="navigation-drawer">
+				<ul class="main_nav">
+					<li>
+						<a href="/login">Login</a>
+					</li>
+
+					<li>
+						<a href="/register">Register</a>
+					</li>
+
+					<li>
+						<a href="/logout">Logout</a>
+					</li>
+			</nav>
+
+			<div class="burger nav_trigger">
+				<div class="burger_inner">
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+			</div>
+
+	</header>
+
+	<div class="main_page">
+
+		<div class="hero__container">
+			<div class="hero__container__inner">
+				{{session.type}}
+				{% for message in get_flashed_messages() %}
+				{{message}}
+				{% endfor %}
