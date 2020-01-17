@@ -112,12 +112,11 @@ def seller():
     return render_template("seller.html", error=error)
 
 
-@app.route("/buyer", methods=("GET", "POST"))
+@app.route("/buyer")
 def buyer():
     """
     buyer registeration
     """
-    error = None
     if request.method == "POST":
 
         full_name = request.form["name"]
@@ -140,8 +139,7 @@ def buyer():
                 address,
                 phone,
                 password,
-                buyer_img_name="",
-                is_verified=0)
+                buyer_img_name="")
         else:
             buyer = Buyer(
                 full_name,
@@ -150,8 +148,7 @@ def buyer():
                 address,
                 phone,
                 password,
-                buyer_img_name=buyer_img.filename,
-                is_verified=0)
+                buyer_img_name=buyer.filename)
 
         print(session, phone)
         verify = Verify(phone, otp)  # add to database

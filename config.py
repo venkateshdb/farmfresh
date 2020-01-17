@@ -12,6 +12,8 @@ class Config(object):
 	SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
 	SECRET_KEY = os.getenv("SECRET_KEY")
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
+	ACCOUNT_SID = os.getenv("ACCOUNT_SID")
+	ACCOUNT_TOKEN = os.getenv("ACCOUNT_TOKEN")
 
 
 class production(Config):
