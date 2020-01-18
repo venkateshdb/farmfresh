@@ -44,6 +44,7 @@ def id():
     key = [random.choice(gen()) for i in range(6)]
     return (int(''.join(key)))
 
+print(os.getenv("REDISCLOUD_URL"))
 
 @app.route("/")
 def main():
