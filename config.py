@@ -15,7 +15,7 @@ class Config(object):
 	ACCOUNT_SID = os.getenv("ACCOUNT_SID")
 	ACCOUNT_TOKEN = os.getenv("ACCOUNT_TOKEN")
 	SESSION_TYPE = "redis"
-	SESSION_REDIS = os.getenv("SESSION_REDIS")
+	REDIS_URL = os.getenv("REDIS_URL")
 
 
 class production(Config):
