@@ -44,7 +44,7 @@ def id():
     key = [random.choice(gen()) for i in range(6)]
     return (int(''.join(key)))
 
-print(os.getenv("REDISCLOUD_URL"))
+
 
 @app.route("/")
 def main():
@@ -226,12 +226,12 @@ def logout():
 
 
 def send_otp(otp):
+    sess_phone = str(session.get("phone_num"))
     try:
-
         message = client.messages.create(
             body="Your OTP For FarmFresh is {0}".format(otp),
             from_="+12132386072",
-            to="+918208264232")
+            to="+91" + sess_phone)
         print(message)
         return message.sid
     except requests.exceptions.ConnectionError:
@@ -269,7 +269,7 @@ def verify():
         else:
             error = "Wrong otp, try again!!"
 
-    return render_template("verify.html", error=error)
+    return render_template("verify.html", error=error, send_to=sess_phone)
 
 
 @app.route("/add_product")
