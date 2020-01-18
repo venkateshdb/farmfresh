@@ -1,56 +1,51 @@
-<!doctype html>
-<html>
+{% extends "base.html" %}
+{% block content %}  
 
-<head>
-	<title>FarmFresh - built for farmers</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width" intial-scale="1">
-</head>
+<!-- Hero -->
+<section class="hero is-medium is-primary is-medium is-bold">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title hero-title">
+        Built For Farmers
+      </h1>
+      <h2 class="subtitle hero-subtitle">
+        Ye Hey Apni Dukaan
+      </h2>
+    </div>
+</div>
+</section>
+<!-- Hero end -->
 
-<body>
+<!-- tile container -->
+<div class="tile is-ancestor centered space-top">
+  <div class="tile is-6 is-vertical is-parent">
+    <div class="tile is-child box">
+      <p class="title">ABOUT</p>
+      <p>FarmFresh is a Portal for Farmers to
+		connect with the Buyers.</p>
+    </div>
+    <div class="tile is-child box">
+      <p class="title">HOW</p>
+      <ul class="section--list">
+			<li>Register For A Seller/Buyer Account</li>
+			<li>Add Product To Sell/Buy</li>
+			<li>Confirm With Seller/Buyer</li>
+			<li>Wait For Pickup/Delivery</li>
+		</ul>
+    </div>
 
-	<header class="site-header">
-		<div class="site-header__inner">
-			<div class="branding">
-				<a href="/">
-					<img src="static/logo/farmfreshlogo.png">
-				</a>
-			</div>
-
-			<div class="search__bar">
-				<input type="search" name="search">
-			</div>
-
-			<nav class="navigation-drawer">
-				<ul class="main_nav">
-					<li>
-						<a href="/login">Login</a>
-					</li>
-
-					<li>
-						<a href="/register">Register</a>
-					</li>
-
-					<li>
-						<a href="/logout">Logout</a>
-					</li>
-			</nav>
-
-			<div class="burger nav_trigger">
-				<div class="burger_inner">
-					<span></span>
-					<span></span>
-					<span></span>
-				</div>
-			</div>
-
-	</header>
-
-	<div class="main_page">
-
-		<div class="hero__container">
-			<div class="hero__container__inner">
-				{{session.type}}
-				{% for message in get_flashed_messages() %}
-				{{message}}
-				{% endfor %}
+  <div class="tile is-child box">
+      <p class="title">WHY</p>
+      <p>Easy To Use</p>
+      <p>Big MarketPlace</p>
+    </div>
+  </div>
+</div>
+<!-- tile end -->
+<footer class="footer">
+	<div class="container has-text-centered">
+		<p class="footer-text">
+			&copy; FarmFresh 2020
+		</p>
+</footer>
+{% endblock %}

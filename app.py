@@ -51,8 +51,7 @@ def main():
     """
     Home page
     """
-    print(session)
-    return render_template("index.html", get=session.get("logged_in"))
+    return render_template("index.html")
 
 
 @app.route("/seller", methods=["GET", "POST"])

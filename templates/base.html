@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <title>FarmFresh - Built for Farmers</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#48c774">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+</head>
+<style>
+@font-face{
+    src:url("static/fonts/sans.woff2");
+    font-family: sans;
+}
+    body{
+        font-family: sans !important;
+        overflow-x: hidden;
+    }
+    h1.navbar-brand-name {
+    font-size: 2em;
+    
+}
+.tile.is-ancestor.centered {
+    margin-top: 30px;
+}
+.centered{
+    justify-content: center;
+}
+
+.navbar-burger{
+    height: auto;
+}
+.navbar-item img {
+    max-height: 2.5em;
+}
+.navbar-end {
+    /*margin-right: 25px;*/
+}
+.button.is-primary {
+    background-color: rgb(19, 214, 12) !important;
+}
+.navbar-menu.is-active {
+    text-align: center;
+}
+.buttons:last-child {
+    justify-content: center;
+}
+.navbar.has-shadow {
+    box-shadow: 0px 1px 0 0 #7b62624d;
+}
+.hero-title{
+    text-align: center;
+    font-size: 5em;
+    text-shadow: 2px 3px #00000075;
+}
+.hero-subtitle{
+    text-align: center;
+    font-size: 2em;
+}
+</style>
+<body>
+    
+    <!--using bulma nav bar-->
+    <nav class="navbar is-fixed-top is-success has-shadow" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      <img src="static/logo/logo.png" width="" height="100%">
+      <h1 class="navbar-brand-name">FarmFresh</h1>
+    </a>
+
+    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-end">
+      <a class="navbar-item">
+        Home
+      </a>
+
+      <a class="navbar-item">
+        About
+      </a>
+        <div class="buttons">
+          <a class="button is-primary" href="/register">
+            <strong>Register</strong>
+          </a>
+          <a class="button is-warning" href="/login">
+            Login
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- end -->
+{% block content %}
+{% endblock %}
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+
+  // Get all "navbar-burger" elements
+  const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+  // Check if there are any navbar burgers
+  if ($navbarBurgers.length > 0) {
+
+    // Add a click event on each of them
+    $navbarBurgers.forEach( el => {
+      el.addEventListener('click', () => {
+
+        // Get the target from the "data-target" attribute
+        const target = el.dataset.target;
+        const $target = document.getElementById(target);
+
+        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+        el.classList.toggle('is-active');
+        $target.classList.toggle('is-active');
+
+      });
+    });
+  }
+
+});
+</script>
+</body>
+</html>
