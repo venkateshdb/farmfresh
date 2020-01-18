@@ -16,7 +16,8 @@ class Config(object):
 	ACCOUNT_SID = os.getenv("ACCOUNT_SID")
 	ACCOUNT_TOKEN = os.getenv("ACCOUNT_TOKEN")
 	SESSION_TYPE = "redis"
-	REDIS_URL = redis.from_url(os.getenv("REDIS_URL"))
+	REDISCLOUD_URL = redis.from_url(os.getenv("REDISCLOUD_URL"))
+	print(REDISCLOUD_URL)
 
 
 class production(Config):
