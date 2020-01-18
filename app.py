@@ -21,7 +21,7 @@ load_dotenv(override=True)
 
 app = Flask(__name__)
 app.config.from_object(os.getenv("APP_SETTING"))
-app.config["SESSION_TYPE"] = "sqlalchemy"
+
 # For twilio API client
 client = Client(os.getenv("ACCOUNT_SID"), os.getenv("ACCOUNT_TOKEN"))
 

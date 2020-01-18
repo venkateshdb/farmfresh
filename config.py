@@ -14,6 +14,8 @@ class Config(object):
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
 	ACCOUNT_SID = os.getenv("ACCOUNT_SID")
 	ACCOUNT_TOKEN = os.getenv("ACCOUNT_TOKEN")
+	SESSION_TYPE = "redis"
+	SESSION_REDIS = os.getenv("SESSION_REDIS")
 
 
 class production(Config):
@@ -28,4 +30,5 @@ class devlopment(Config):
 	DEBUG = True
 	TESTING = True
 	ENV = "TESTING"
+	SESSION_TYPE = "sqlalchemy"
 	SQLALCHEMY_DATABASE_URI =  "sqlite:///" + os.path.join(basedir, 'us.db')
