@@ -1,6 +1,7 @@
 # config file 
 
 import os
+import redis
 from dotenv import load_dotenv
 load_dotenv()
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -15,7 +16,7 @@ class Config(object):
 	ACCOUNT_SID = os.getenv("ACCOUNT_SID")
 	ACCOUNT_TOKEN = os.getenv("ACCOUNT_TOKEN")
 	SESSION_TYPE = "redis"
-	REDIS_URL = os.getenv("REDIS_URL")
+	REDIS_URL = redis.from_url(os.getenv("REDIS_URL"))
 
 
 class production(Config):

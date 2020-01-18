@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 import random
 import string
 import os, requests
+import redis
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 # app intance and some config
