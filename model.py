@@ -1,6 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from app import db
 
+#todo: order_qty change to string, to prevent for integer overflow if user inserted a large integer
+# or some other solution to be implemented
 
 class Seller(db.Model):
     """
@@ -13,7 +15,7 @@ class Seller(db.Model):
     city = db.Column(db.String(), nullable=False)
     state = db.Column(db.String(), nullable=False)
     address = db.Column(db.String(), nullable=False)
-    phone_num = db.Column(db.Integer, nullable=False)
+    phone_num = db.Column(db.String(), nullable=False)
     password = db.Column(db.String(), nullable=False)
     seller_img_name = db.Column(db.String())
     is_verified = db.Column(db.Integer)
@@ -40,7 +42,7 @@ class Buyer(db.Model):
     city = db.Column(db.String(), nullable=False)
     state = db.Column(db.String(), nullable=False)
     address = db.Column(db.String(), nullable=False)
-    phone_num = db.Column(db.Integer, nullable=False)
+    phone_num = db.Column(db.String(), nullable=False)
     password = db.Column(db.String(), nullable=False)
     buyer_img_name = db.Column(db.String())
     is_verified = db.Column(db.Integer)
