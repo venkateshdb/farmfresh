@@ -198,8 +198,8 @@ class Sessions(db.Model):
     __tablename__ = "sessions"
 
     id = db.Column(db.Integer, primary_key=True)
-    session_id = db.Column(db.String())
-    data = db.Column(db.String())
+    session_id = db.Column(db.String(collation='utf8'))
+    data = db.Column(db.String(collation='utf8'))
     expiry = db.Column(db.String())
 
     def __init__(self,session_id,data,expiry):
