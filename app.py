@@ -44,7 +44,28 @@ def id():
     key = [random.choice(gen()) for i in range(6)]
     return (int(''.join(key)))
 
+def send_otp(otp):
+    sess_phone = str(session.get("phone_num"))
+    try:
+        message = client.messages.create(
+            body="Your OTP For FarmFresh is {0}".format(otp),
+            from_="+12132386072",
+            to="+91" + sess_phone)
+        print(message)
+        return message.sid
+    except requests.exceptions.ConnectionError:
+        return None
 
+"""
+Some session variables
+
+@logged_in
+@user_id
+@phone_num
+@type(account_type)
+@username
+
+"""
 
 @app.route("/")
 def main():
@@ -190,51 +211,49 @@ def login():
                 session["logged_in"] = True
                 session["user_id"] = get[0].id
                 session["username"] = get[0].full_name
-
+                session["type"] = account_type
+                session["phone_num"] = _num
+                print(session)
                 flash("welcome {}".format(session["username"]))
-                return redirect(url_for("main"))
+                return redirect(url_for("seller_dashboard"))
             else:
-                error = "Invalid"
+                error = "Invalid Credentials"
 
         elif (account_type == "buyer"):
             get = Buyer.query.filter_by(
                 phone_num=_num, password=_password).all()
             if get:
                 # if user is present
-                session["logged_in"] = "True"
+                session["logged_in"] = True
                 session["user_id"] = get[0].id
                 session["username"] = get[0].full_name
                 session["type"] = account_type
+                session["phone_num"] = _num
                 print(session)
+
                 flash("Welcome {}".format(session["username"]))
-                return redirect(url_for("main"))
+                return redirect(url_for("buyer_dashboard"))
 
             else:
-                error = "Invalid"
+                error = "Invalid Credentials"
 
         else:
-            error = "Pls, choose correct choice"
+            error = "Pls, Choose Correct Choice"
 
     return render_template("login.html", error=error)
+
 
 
 @app.route("/logout")
 def logout():
     session.clear()
-    return "cleared"
-
-
-def send_otp(otp):
-    sess_phone = str(session.get("phone_num"))
-    try:
-        message = client.messages.create(
-            body="Your OTP For FarmFresh is {0}".format(otp),
-            from_="+12132386072",
-            to="+91" + sess_phone)
-        print(message)
-        return message.sid
-    except requests.exceptions.ConnectionError:
-        return None
+    #TODO : check how to configure session_type to sqlalchemy 
+    #  and handle .clear on session, as it was removing
+    #  date from session table and causing 
+    #  TypeError: '<=' not supported between instances of 'NoneType' and 'datetime.datetime'
+    #  checkout flask_session github repo for this issue
+    flash("successfully logout")
+    return redirect(url_for("main"))
 
 
 @app.route("/verify", methods=("GET", "POST"))
@@ -246,9 +265,10 @@ def verify():
     # get otp entered by user
     if request.method == "POST":
         _otp = request.form['otp']
-        print(_otp)
+
+        # filter by phone number and check entered otp
         get = Verify.query.filter_by(phone_num=sess_phone, otp=_otp).all()
-        print(get)
+
         if get:
             flash("Otp successfully verified!!")
 
@@ -264,20 +284,102 @@ def verify():
                 })
 
             db.session.commit()
-            return redirect(url_for("main"))
+            return redirect(url_for("login"))
         else:
             error = "Wrong otp, try again!!"
 
     return render_template("verify.html", error=error, send_to=sess_phone)
 
 
-@app.route("/add_product")
+
+
+@app.route("/resend")
+def resend():
+	"""
+	resend otp
+	"""
+
+	return "ok"
+
+@app.route("/forgot_password")
+def reset_password():
+
+	return "ok"
+
+@app.route("/seller_dashboard", methods=("GET", "POST"))
+def seller_dashboard():
+	if not session.get("logged_in"):
+		abort(400)
+	# getting session variable
+	user_id = session.get("user_id")
+	username = session.get("username")
+	sess_phone = session.get("phone_num")
+	account_type = session.get("type")
+
+	
+	# fetch all those product that this user had posted to sell
+	get_selling_products = Product.query.filter_by(seller_id=user_id)
+	#get = Product.query.join(seller, Product.seller_id).all()
+	print(get_selling_products,user_id,username,sess_phone,account_type)
+	#print(get)
+	# Storing product details from seller and fetching from database
+
+	return render_template("seller_dashboard.html", products=get_selling_products)
+
+
+
+@app.route("/buyer_dashboard", methods=("GET", "POST"))
+def buyer_dashboard():
+	#render_template("buyer_dashboard.html")
+	return "ok"
+
+
+@app.route("/add_product", methods=("POST"))
 def add_product():
-    return "add"
+	"""
+	adds product from seller
+	"""
+	if not session.get("logged_in"):
+		abort(400)
+
+	# getting session variable
+	user_id = session.get("user_id")
+	username = session.get("username")
+	sess_phone = session.get("phone_num")
+	account_type = session.get("type")
+
+	if request.method == "POST":
+		"""
+		Add product to product table
+		"""
+		product_name = request.form["product_name"]
+		product_qty = request.form["product_qty"]
+		product_price = request.form["product_price"]
+		added_on = request.form["added_on"]
+		price = request.form["price"]
+		product_img = request.files["product_img"]
+
+		if product_img == "":
+			flash("Add a Product Image!!")
+			return redirect(url_for(seller_dashboard))
+		# if all ok, add product
+		product = Product(product_name, product_qty, added_on, price, product_img)
+		db.session.add(product)
+		db.session.commit()
+
+		flash("Product Added successfully!!")
+    return redirect(url_for("seller_dashboard"))
 
 
 @app.route("/remove_product")
 def remove_product():
+	"""
+	remove product
+	"""
+	if not session.get("logged_in"):
+		abort(400)
+
+
     return "rm"
 
 

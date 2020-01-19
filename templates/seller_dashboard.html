@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- products -->
+
+	
+
+	{% for product in products %}
+	<p> {{product.product_name}}</p>
+	<p> {{product.product_qty}}</p>
+    {% else %}
+    <p>Sorry, You havent sold any product yet</p>
+	{% endfor %}
+
+
+{% endblock %}

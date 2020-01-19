@@ -3,6 +3,7 @@ from app import db
 
 #todo: order_qty change to string, to prevent for integer overflow if user inserted a large integer
 # or some other solution to be implemented
+# add randomly generated ids for data
 
 class Seller(db.Model):
     """
@@ -134,8 +135,11 @@ class Product(db.Model):
     """
 	Foreign Key
 	"""
+    # relate to a category specified in category 
     category_id = db.Column(db.Integer, db.ForeignKey(
         "product_category.category_id"))
+
+    # relate to seller, who added this product
     seller_id = db.Column(db.Integer, db.ForeignKey("seller.id"))
 
     def __init__(self, product_name, product_qty, product_date, product_price, product_img_name, seller_id, category_id):
@@ -194,17 +198,3 @@ class Verify(db.Model):
         self.phone_num = phone_num
         self.otp = otp
 
-# flask session table
-class Sessions(db.Model):
-
-    __tablename__ = "sessions"
-
-    id = db.Column(db.Integer, primary_key=True)
-    session_id = db.Column(db.String(convert_unicode=True))
-    data = db.Column(db.String())
-    expiry = db.Column(db.String())
-
-    def __init__(self,session_id,data,expiry):
-        self.session_id = session_id
-        self.data = data
-        self.expiry = expiry
