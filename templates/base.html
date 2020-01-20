@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
-
 <head>
   <title>FarmFresh - Built for Farmers</title>
   <meta charset="utf-8">
@@ -23,7 +22,9 @@
     font-size: 2em;
 
   }
-
+  .navbar-menu{
+    margin-right: 1em;
+  }
   .tile.is-ancestor.centered {
     margin-top: 30px;
   }
@@ -40,8 +41,11 @@
     max-height: 2.5em;
   }
 
-  .navbar-end {
-    /*margin-right: 25px;*/
+  
+  @media only screen and (max-width:850px){
+    .navbar-menu{
+      margin-right: 0;
+    }
   }
 
   .button.is-primary {
@@ -87,6 +91,36 @@
   .section {
     background-color: azure;
   }
+  p.error {
+      background-color: rgb(249, 249, 249);
+      padding: 10px;
+      width: 50%;
+      border-left: 3px solid rgb(219, 60, 49);
+      color: black !important;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 3px grey;
+
+    }
+
+    img.error-icon {
+      position: relative;
+      top: -2px !important;
+    }
+
+    span.err__text {
+      position: relative;
+      top: -9px;
+      left: 4px;
+    }
+    @media only screen and (max-width:850px) {
+      body {
+        background-color: var(--white);
+      }
+      
+      p.error {
+        width: 90%;
+      }
+    }
   
 </style>
 
@@ -117,10 +151,20 @@
         <a class="navbar-item">
           About
         </a>
-        <div class="buttons">
-          <a class="button is-primary" href="/register">
-            <strong>Register</strong>
+        <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Register
+        </a>
+        <div class="navbar-dropdown is-boxed">
+          <a class="navbar-item" href="/seller">
+            Seller
           </a>
+          <a class="navbar-item" href="/buyer">
+            Buyer
+          </a>
+        </div>
+      </div>
+        <div class="buttons">
           <a class="button is-warning" href="/login">
             Login
           </a>

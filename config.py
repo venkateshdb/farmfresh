@@ -17,6 +17,7 @@ class Config(object):
 	ACCOUNT_TOKEN = os.getenv("ACCOUNT_TOKEN")
 	SESSION_TYPE = "redis"
 	SESSION_REDIS = redis.Redis.from_url(os.getenv("REDISCLOUD_URL"))
+
 	
 
 

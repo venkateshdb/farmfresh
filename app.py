@@ -315,9 +315,9 @@ def verify():
 
 @app.route("/seller_dashboard", methods=["GET", "POST"])
 def seller_dashboard():
-    if not session.get("logged_in"):
+    if(session.get("logged_in") == False and session.get("type") != "seller"):
         abort(400)
-    print(session.get("logged_in"), session.get("user_id"))
+   
     # getting session variable
     user_id = session.get("user_id")
     username = session.get("username")
@@ -335,10 +335,27 @@ def seller_dashboard():
         "seller_dashboard.html", products=get_selling_products)
 
 
-@app.route("/buyer_dashboard", methods=("GET", "POST"))
+@app.route("/buyer_dashboard", methods=["GET", "POST"])
 def buyer_dashboard():
-    #render_template("buyer_dashboard.html")
-    return "ok"
+    """
+    show products available on marketplace
+    """
+    if(session.get("logged_in") == False and session.get("type") != "buyer"):
+        abort(400)
+   
+    # getting session variable
+    user_id = session.get("user_id")
+    username = session.get("username")
+    sess_phone = session.get("phone_num")
+    account_type = session.get("type")
+
+    # get all products availabe 
+    #get_products = Product.query.join(Seller,Product.seller_id == Seller.id).all()
+
+    get_products = Product.query.all()
+    print(get_products)
+
+    return render_template("buyer_dashboard.html", products=get_products)
 
 
 @app.route("/add_product", methods=["GET","POST"])
@@ -373,7 +390,7 @@ def add_product():
         else:
             # if all ok, add product
             product = Product(product_name, product_qty, product_date, product_price,
-                                product_img.filename,seller_id=user_id,category_id=category)
+                                product_img.filename,seller_id=user_id,category_id=category,seller_name=username,seller_phone=sess_phone)
             print(product)
             db.session.add(product)
             db.session.commit()

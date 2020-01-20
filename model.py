@@ -132,6 +132,9 @@ class Product(db.Model):
     product_img_name = db.Column(db.String())
 
     order = db.relationship("Order", backref="order")
+
+    seller_name = db.Column(db.String())
+    seller_phone = db.Column(db.String())
     """
 	Foreign Key
 	"""
@@ -142,7 +145,7 @@ class Product(db.Model):
     # relate to seller, who added this product
     seller_id = db.Column(db.Integer, db.ForeignKey("seller.id"))
 
-    def __init__(self, product_name, product_qty, product_date, product_price, product_img_name, seller_id, category_id):
+    def __init__(self, product_name, product_qty, product_date, product_price, product_img_name, seller_id, category_id,seller_name,seller_phone):
         self.product_name = product_name
         self.product_qty = product_qty
         self.product_date = product_date
@@ -150,6 +153,9 @@ class Product(db.Model):
         self.product_img_name = product_img_name
         self.category_id = category_id
         self.seller_id = seller_id
+
+        self.seller_name = seller_name
+        self.seller_phone = seller_phone
 
 
 class Product_category(db.Model):

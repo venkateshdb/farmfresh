@@ -2,13 +2,13 @@
 {% block content %}
 
 <!-- Hero -->
-<section class="hero is-medium is-primary is-medium is-bold">
+<section class="hero is-medium gradient is-medium">
   <div class="hero-body">
     <div class="container">
-      <h1 class="title hero-title">
+      <h1 class="title hero-title white">
         Built For Farmers
       </h1>
-      <h2 class="subtitle hero-subtitle">
+      <h2 class="subtitle hero-subtitle white">
         Ye Hey Apni Dukaan
       </h2>
     </div>
@@ -17,6 +17,14 @@
 <!-- Hero end -->
 
 <!-- tile container -->
+    {% for message in get_flashed_messages() %}
+        <div class="flash">{{message}}</div>
+        {%endfor%} {% if error %}
+        <p class="error">
+          <img src="static/images/icon_error.png" class="error-icon">
+          <span class="err__text">Error: {{ error }}</span>
+          {% endif %}
+        </p>
 <div class="tile is-ancestor centered space-top">
   <div class="tile is-6 is-vertical is-parent">
     <div class="tile is-child box">

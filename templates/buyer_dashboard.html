@@ -7,45 +7,19 @@
     <header class="section-header">
 
       <h1 class="hero-title is-size-1-mobile white">
-        Seller Dashboard
+        Buyer Dashboard
       </h1>
       <span class="is-block is-size-6 is-size-5-tablet">
-        <p class="subtitle white">Easily Manage your Inventory</p>
+        <p class="subtitle white">Easily Purchase Directly From Farmer</p>
       </span>
   </div>
   </div>
 </section>
 
-<div class="level notification">
-  <div class="level-item">
-    <div class="level-right">
-      <div class="level-right">
-        <a href="/add_product">
-          <button class="button is-success is-outlined">
-
-            <span class="icon"><i class="fas fa-plus-square"></i></span>
-            <span>Add new Product</span></button>
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-
-
 <main id="main">
   <div class="level">
     <div class="level-item">
-      <h3 class="subtitle is-3">Your Products</h3>
-      <h4 class="subtitle is-4">
-        {% for message in get_flashed_messages() %}
-        <div class="flash">{{message}}</div>
-        {%endfor%} {% if error %}
-        <p class="error">
-          <img src="static/images/icon_error.png" class="error-icon">
-          <span class="err__text">Error: {{ error }}</span>
-          {% endif %}
-        </p>
-      </h4>
+      <h3 class="subtitle is-3">Products In Market</h3>
     </div>
   </div>
   <section class="section">
@@ -72,10 +46,12 @@
                     <p class="subtitle">Qty(Kg): {{ product.product_qty }}</p>
                     <p class="subtitle">Added on: {{product.product_date}}</p>
                     <p class="subtitle">Price: {{product.product_price}} / kg</p>
-                    <button class="button is-danger is-outlined remove" data-id={{product.product_id}}>
-                      <span>Remove Product</span>
+                    <p class="subtitle">Seller: {{product.seller_name}} </p>
+                    <p class="subtitle">Phone no: {{product.seller_phone}} </p>
+                    <button class="button is-warning add" data-id={{product.product_id}}>
+                      <span>Add to cart</span>
                       <span class="icon is-small">
-                        <i class="fas fa-times"></i>
+                        <i class="fas fa-shopping-cart"></i>
                       </span>
                     </button>
                   </div>

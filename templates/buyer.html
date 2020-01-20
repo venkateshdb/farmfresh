@@ -147,9 +147,15 @@
     <div id="grid__container">
         <section class="login__container">
             <h2 class="form__heading">Register Your Buyer Account Today</h2>
-            {{error}}
             <form enctype="multipart/form-data" accept="utf=8" action="/buyer" method="POST">
-
+                {% for message in get_flashed_messages() %}
+                <div class="flash">{{message}}</div>
+                {%endfor%} {% if error %}
+                <p class="error">
+                <img src="static/images/icon_error.png" class="error-icon">
+                <span class="err__text">Error: {{ error }}</span>
+                {% endif %}
+                </p>
                 <input type="text" class="txt" placeholder="Full Name" name="name">
                 <input type="text" class="txt" placeholder="City" name="city">
                 <input type="text" class="txt" placeholder="State" name="state">
