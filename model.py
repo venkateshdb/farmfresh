@@ -198,3 +198,17 @@ class Verify(db.Model):
         self.phone_num = phone_num
         self.otp = otp
 
+# flask session table
+class Sessions(db.Model):
+
+    __tablename__ = "sessions"
+
+    id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.String(255,convert_unicode=True), unique=True)
+    data = db.Column(db.String())
+    expiry = db.Column(db.String())
+
+    def __init__(self,session_id,data,expiry):
+        self.session_id = session_id
+        self.data = data
+        self.expiry = expiry

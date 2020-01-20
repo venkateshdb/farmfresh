@@ -2,14 +2,100 @@
 {% block content %}
 <!-- products -->
 
-	
+<section class="section is-medium is-link is-medium gradient">
+  <div class="container has-text-centered">
+    <header class="section-header">
 
-	{% for product in products %}
-	<p> {{product.product_name}}</p>
-	<p> {{product.product_qty}}</p>
-    {% else %}
-    <p>Sorry, You havent sold any product yet</p>
-	{% endfor %}
+      <h1 class="hero-title is-size-1-mobile white">
+        Seller Dashboard
+      </h1>
+      <span class="is-block is-size-6 is-size-5-tablet">
+        <p class="subtitle white">Easily Manage your Inventory</p>
+      </span>
+  </div>
+  </div>
+</section>
+
+<div class="level notification">
+  <div class="level-item">
+    <div class="level-right">
+      <div class="level-right">
+        <a href="/add_product">
+          <button class="button is-success is-outlined">
+
+            <span class="icon"><i class="fas fa-plus-square"></i></span>
+            <span>Add new Product</span></button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 
 
+<main id="main">
+  <div class="level">
+    <div class="level-item">
+      <h3 class="subtitle is-3">Your Products</h3>
+    </div>
+  </div>
+  <section class="section">
+
+    <div class="showcase">
+      <div class="columns is-multiline">
+        {% for product in products %}
+        <div class="column is-12-mobile is-4-tablet is-4-desktop">
+          <div class="row columns">
+            <div class="column ">
+              <div class="card is-card-shadow">
+                <div class="card-image is-slightly-rounded">
+                  <figure class="image">
+                    <img src="static/images/images6.jpeg" alt="Image">
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <div class="content">
+                    <div class="tags">
+                      <span class="tag is-light is-primary">Id: {{ product.product_id }}</span>
+                      <span class="tag is-light is-primary">Grains</span>
+                    </div>
+                    <p class="title">{{product.product_name}}</p>
+                    <p class="subtitle">Qty(Kg): {{ product.product_qty }}</p>
+                    <p class="subtitle">Added on: {{product.product_date}}</p>
+                    <p class="subtitle">Price: {{product.product_price}} / kg</p>
+                    <button class="button is-danger is-outlined" data-id={{product.product_id}}>
+                      <span>Remove Product</span>
+                      <span class="icon is-small">
+                        <i class="fas fa-times"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+  </section>
+</main>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+<script type="text/javascript">
+  $(".remove").click(delete_pro);
+  function delete_pro() {
+    var id = $(this).attr('data-id');
+    console.log(id);
+    $.ajax({
+      type: "POST",
+      url: "/remove_product/" + id,
+      dataType: "text",
+      success: function (resp) {
+        alert("success" + resp);
+        location.reload(true);
+      }
+
+    });
+  }
+</script>
 {% endblock %}

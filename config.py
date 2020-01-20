@@ -32,5 +32,5 @@ class devlopment(Config):
 	DEBUG = True
 	TESTING = True
 	ENV = "TESTING"
-	SESSION_TYPE = "filesystem"
+	SESSION_TYPE = "sqlalchemy"
 	SQLALCHEMY_DATABASE_URI =  "sqlite:///" + os.path.join(basedir, 'us.db')

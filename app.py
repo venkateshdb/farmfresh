@@ -9,11 +9,11 @@ ver: 1
 from twilio.rest import Client
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template, request, flash, redirect, url_for, abort, session
+from flask import Flask, render_template, request, flash, redirect, url_for, abort, session, jsonify
 from dotenv import load_dotenv
 import random
 import string
-import os, requests
+import os, requests, time
 import redis
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -44,7 +44,11 @@ def id():
     key = [random.choice(gen()) for i in range(6)]
     return (int(''.join(key)))
 
+
 def send_otp(otp):
+    """
+    function to send otp to a given number
+    """
     sess_phone = str(session.get("phone_num"))
     try:
         message = client.messages.create(
@@ -56,6 +60,7 @@ def send_otp(otp):
     except requests.exceptions.ConnectionError:
         return None
 
+
 """
 Some session variables
 
@@ -66,6 +71,7 @@ Some session variables
 @username
 
 """
+
 
 @app.route("/")
 def main():
@@ -203,7 +209,7 @@ def login():
         _num = request.form["phone_num"]
         _password = request.form["password"]
         account_type = request.form["account_type"]
-
+        print("accounttypee: ",account_type)
         if account_type == "seller":
             get = Seller.query.filter_by(
                 phone_num=_num, password=_password).all()
@@ -214,12 +220,13 @@ def login():
                 session["type"] = account_type
                 session["phone_num"] = _num
                 print(session)
+                print("ss: ", type(session.get("logged_in")))
                 flash("welcome {}".format(session["username"]))
                 return redirect(url_for("seller_dashboard"))
             else:
                 error = "Invalid Credentials"
 
-        elif (account_type == "buyer"):
+        elif(account_type == "buyer"):
             get = Buyer.query.filter_by(
                 phone_num=_num, password=_password).all()
             if get:
@@ -243,20 +250,19 @@ def login():
     return render_template("login.html", error=error)
 
 
-
 @app.route("/logout")
 def logout():
     session.clear()
-    #TODO : check how to configure session_type to sqlalchemy 
+    #TODO : check how to configure session_type to sqlalchemy
     #  and handle .clear on session, as it was removing
-    #  date from session table and causing 
+    #  date from session table and causing
     #  TypeError: '<=' not supported between instances of 'NoneType' and 'datetime.datetime'
     #  checkout flask_session github repo for this issue
     flash("successfully logout")
     return redirect(url_for("main"))
 
 
-@app.route("/verify", methods=("GET", "POST"))
+@app.route("/verify", methods=["GET", "POST"])
 def verify():
     error = None
 
@@ -277,11 +283,26 @@ def verify():
                     "is_verified":
                     1
                 })
+
+                # only for password reset case
+                if session.get("new_password") != None:
+                    Seller.query.filter_by(phone_num=sess_phone, seller_id=user_id).update({
+                        "password":
+                        session.get("new_password")
+                    })
+
             elif (session.get("type") == "buyer"):
                 Buyer.query.filter_by(phone_num=sess_phone).update({
                     "is_verified":
                     1
                 })
+
+                # only for password reset case
+                if session.get("new_password") != None:
+                    Seller.query.filter_by(phone_num=sess_phone, seller_id=user_id).update({
+                        "password":
+                        session.get("new_password")
+                    })
 
             db.session.commit()
             return redirect(url_for("login"))
@@ -292,95 +313,177 @@ def verify():
 
 
 
-
-@app.route("/resend")
-def resend():
-	"""
-	resend otp
-	"""
-
-	return "ok"
-
-@app.route("/forgot_password")
-def reset_password():
-
-	return "ok"
-
-@app.route("/seller_dashboard", methods=("GET", "POST"))
+@app.route("/seller_dashboard", methods=["GET", "POST"])
 def seller_dashboard():
-	if not session.get("logged_in"):
-		abort(400)
-	# getting session variable
-	user_id = session.get("user_id")
-	username = session.get("username")
-	sess_phone = session.get("phone_num")
-	account_type = session.get("type")
+    if not session.get("logged_in"):
+        abort(400)
+    print(session.get("logged_in"), session.get("user_id"))
+    # getting session variable
+    user_id = session.get("user_id")
+    username = session.get("username")
+    sess_phone = session.get("phone_num")
+    account_type = session.get("type")
 
-	
-	# fetch all those product that this user had posted to sell
-	get_selling_products = Product.query.filter_by(seller_id=user_id)
-	#get = Product.query.join(seller, Product.seller_id).all()
-	print(get_selling_products,user_id,username,sess_phone,account_type)
-	#print(get)
-	# Storing product details from seller and fetching from database
+    # fetch all those product that this user had posted to sell
+    get_selling_products = Product.query.filter_by(seller_id=user_id).all()
+    #get = Product.query.join(seller, Product.seller_id).all()
+    #print(get_selling_products, user_id, username, sess_phone, account_type)
+    #print(get)
+    # Storing product details from seller and fetching from database
 
-	return render_template("seller_dashboard.html", products=get_selling_products)
-
+    return render_template(
+        "seller_dashboard.html", products=get_selling_products)
 
 
 @app.route("/buyer_dashboard", methods=("GET", "POST"))
 def buyer_dashboard():
-	#render_template("buyer_dashboard.html")
-	return "ok"
+    #render_template("buyer_dashboard.html")
+    return "ok"
 
 
-@app.route("/add_product", methods=("POST"))
+@app.route("/add_product", methods=["GET","POST"])
 def add_product():
-	"""
-	adds product from seller
-	"""
-	if not session.get("logged_in"):
-		abort(400)
+    """
+    adds product from seller
+    """
+    if not session.get("logged_in"):
+        abort(400)
 
-	# getting session variable
-	user_id = session.get("user_id")
-	username = session.get("username")
-	sess_phone = session.get("phone_num")
-	account_type = session.get("type")
+    # getting session variable
+    user_id = session.get("user_id")
+    username = session.get("username")
+    sess_phone = session.get("phone_num")
+    account_type = session.get("type")
 
-	if request.method == "POST":
-		"""
-		Add product to product table
-		"""
-		product_name = request.form["product_name"]
-		product_qty = request.form["product_qty"]
-		product_price = request.form["product_price"]
-		added_on = request.form["added_on"]
-		price = request.form["price"]
-		product_img = request.files["product_img"]
+    if request.method == "POST":
+        """
+        Add product to product table
+        """
+        product_name = request.form["product_name"]
+        product_qty = request.form["product_qty"]
+        product_price = request.form["product_price"]
+        product_date = str(request.form["added_on"])
+        category = int(request.form["category"])
+        product_img = request.files["product_img"]
 
-		if product_img == "":
-			flash("Add a Product Image!!")
-			return redirect(url_for(seller_dashboard))
-		# if all ok, add product
-		product = Product(product_name, product_qty, added_on, price, product_img)
-		db.session.add(product)
-		db.session.commit()
+        #print(user_id,product_name,product_qty,product_price,added_on,product_img)
+        if product_img == "":
+            flash("Add a Product Image!!")
+            return redirect(url_for(seller_dashboard))
+        else:
+            # if all ok, add product
+            product = Product(product_name, product_qty, product_date, product_price,
+                                product_img.filename,seller_id=user_id,category_id=category)
+            print(product)
+            db.session.add(product)
+            db.session.commit()
 
-		flash("Product Added successfully!!")
-    return redirect(url_for("seller_dashboard"))
+        flash("Product Added successfully!!")
+        return redirect(url_for("seller_dashboard"))
 
-
-@app.route("/remove_product")
-def remove_product():
-	"""
-	remove product
-	"""
-	if not session.get("logged_in"):
-		abort(400)
+    return render_template("add_product.html")
 
 
-    return "rm"
+@app.route("/remove_product/<int:id>", methods=["POST"])
+def remove_product(id):
+    """
+    remove product
+    """
+    if not session.get("logged_in"):
+        abort(400)
+
+    if request.method == "POST":
+
+        del_product_id = id
+        print(del_product_id)
+
+        Product.query.filter_by(product_id=del_product_id).delete()
+        db.session.commit()
+
+    return jsonify(status="successfully removed")
+
+@app.route("/resend_otp")
+def resend():
+    """
+    resend otp
+    """
+
+    # genereate new otp
+    otp = id()
+    sess_phone = session.get("phone_num")
+
+    # update previous sent otp to user
+    verify = Verify.query.filter_by(phone_num=sess_phone).update({"otp": otp})
+
+    # Now send new otp
+    if send_otp(otp) is not None:
+        flash("OTP Resend To {}".format(sess_phone))
+        db.session.commit()
+    else:
+        flash("Error, While sending OTP")
+
+    return redirect(url_for("verify"))
+
+
+@app.route("/forgot_password", methods=["POST", "GET"])
+def reset_password():
+
+    otp = id()  #generate an otp
+    error = None
+    if request.method == "POST":
+        phone_num = request.form["phone_num"]
+        account_type = request.form["account_type"]
+        new_password = request.form["password"]
+
+        session["phone_num"] = phone_num  #add phone_num to session
+        session["new_password"] = new_password  # save password to session
+        session["type"] = account_type
+        # TODO: create a verify fun to check check otp, and return only
+        # status of it
+
+        if account_type == "seller":
+            try:
+                check_if_exist = Seller.query.filter_by(
+                    phone_num=phone_num).all()
+
+                if check_if_exist:
+                    # if phone number present, then send otp to verify it
+                    # add record to database
+                    verify = Verify(phone_num, otp)
+                    db.session.add(verify)
+
+                    # Now send otp
+                    if send_otp(otp) is not None:
+                        db.session.commit()
+                        return redirect(url_for("verify"))
+                    else:
+                        error = "Error while sending otp"
+
+            except sqlalchemy.exc.SQLAlchemyError:
+                error = "Sorry, Record doesn't exists"
+
+        elif account_type == "buyer":
+            try:
+                check_if_exist = Seller.query.filter_by(
+                    phone_num=phone_num).all()
+
+                if check_if_exist:
+                    # if phone number present, then send otp to verify it
+                    # add record to database
+                    verify = Verify(phone_num, otp)
+                    db.session.add(verify)
+
+                    # Now send otp
+                    if send_otp(otp) is not None:
+                        db.session.commit()
+                        return redirect(url_for("verify"))
+                    else:
+                        error = "Error while sending otp"
+
+            except sqlalchemy.orm.exc:
+                error = "Sorry, Record doesn't exists"
+
+    return render_template("forgot_password.html", error=error)
 
 
 if __name__ == "__main__":

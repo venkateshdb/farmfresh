@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#48c774">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+  <title>Add Products</title>
+</head>
+  <style>
+    :root {
+
+      --gradient-color-first: rgb(247, 211, 185);
+      --gradient-color-second: rgb(234, 144, 182);
+
+      --button-color: rgb(36, 146, 248);
+      --link: rgb(36, 146, 248);
+      --white: rgb(255, 250, 245);
+      --grey: rgb(219, 229, 238);
+
+    }
+
+    @font-face {
+      src: url("static/fonts/sans.woff2");
+      font-family: 'sans';
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans;
+    }
+
+    #grid__container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 100vh;
+    }
+
+
+    #grid__container .login__container {
+      background-color: var(--white);
+      padding-top: 5em;
+      padding-left: 4em;
+    }
+
+    #grid__container .form__heading {
+      font-weight: 300;
+      font-size: 2em;
+      margin-bottom: 1.5em;
+    }
+
+    .txt:focus {
+      border-bottom-color: var(--link);
+      outline: none;
+    }
+
+    #grid__container .txt {
+      display: block;
+      border-top-width: 0;
+      border-right-width: 0;
+      border-left-width: 0;
+      padding: 1em;
+      border-bottom-width: 2px !important;
+      margin-bottom: 3em;
+      width: 75%;
+      background-color: var(--white);
+    }
+
+
+    ::-webkit-input-placeholder {
+      font-size: 13px;
+      color: rgb(19, 52, 82);
+      letter-spacing: 2px;
+      font-weight: 500;
+    }
+
+
+    .login__container .btn {
+      font-weight: 500;
+      background-color: var(--button-color);
+      color: rgb(255, 255, 255);
+      padding: 14px;
+      font-size: 13px;
+      letter-spacing: 2px;
+      width: 10em;
+      margin: 16px 0 16px 0;
+      border-radius: 60px;
+      border-style: none;
+      text-align: center;
+      display: block;
+      cursor: pointer;
+    }
+
+    .login__container p,
+    li {
+      display: inline-block;
+      color: rgb(29, 25, 25);
+    }
+
+
+    a>li {
+      list-style: none;
+      color: var(--link) !important;
+      text-decoration: none;
+      font-weight: 500;
+      margin: 24px 0 22px 0;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+
+    #image__container {
+      background: url("static/images/farm.jpg");
+      display: grid;
+      background-size: cover;
+
+    }
+
+    #image__container>img {
+      align-self: center;
+      position: relative;
+      left: 24%;
+      right: 50%;
+    }
+
+
+    @media only screen and (max-width:850px) {
+      body {
+        background-color: var(--white);
+      }
+
+      #grid__container {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      #image__container {
+        display: none !important;
+      }
+    }
+     @font-face {
+    src: url("static/fonts/sans.woff2");
+    font-family: sans;
+  }
+
+  h1.navbar-brand-name {
+    font-size: 2em;
+
+  }
+
+  .tile.is-ancestor.centered {
+    margin-top: 30px;
+  }
+
+  .centered {
+    justify-content: center;
+  }
+
+  .navbar-burger {
+    height: auto;
+  }
+
+  .navbar-item img {
+    max-height: 2.5em;
+  }
+
+  .navbar-end {
+    /*margin-right: 25px;*/
+  }
+
+  .button.is-primary {
+    background-color: rgb(19, 214, 12) !important;
+  }
+
+  .navbar-menu.is-active {
+    text-align: center;
+  }
+
+  .buttons:last-child {
+    justify-content: center;
+  }
+
+  .navbar.has-shadow {
+    box-shadow: 0px 1px 0 0 #7b62624d;
+  }
+
+  a {
+    text-decoration: none !important;
+  }
+  </style>
+</head>
+
+
+<body>
+    <nav class="navbar is-fixed-top is-success has-shadow" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">
+        <img src="static/logo/logo.png" width="" height="100%">
+        <h1 class="navbar-brand-name">FarmFresh</h1>
+      </a>
+
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+        data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item">
+          Home
+        </a>
+
+        <a class="navbar-item">
+          About
+        </a>
+        <div class="buttons">
+          <a class="button is-primary" href="/register">
+            <strong>Register</strong>
+          </a>
+          <a class="button is-warning" href="/login">
+            Login
+          </a>
+        </div>
+      </div>
+    </div>
+    </div>
+  </nav>
+  <div id="grid__container">
+    <section class="login__container">
+      <h2 class="form__heading">Add Product For Selling</h2>
+      <form enctype="multipart/form-data" accept="utf=8" action="/add_product" method="POST">
+        {{error}}
+        <input type="text" class="txt" placeholder="Product Name" name="product_name">
+        <input type="text" class="txt" placeholder="Product Qty" name="product_qty">
+        <input type="text" class="txt" placeholder="Product Price(per kg)" name="product_price">
+        <select name="category">
+            <option value=1>Grains</option>
+            <option value=2>Fruit</option>
+            <option value=3>Vegetable</option>
+            <option value=4>Dairy</option>
+        </select>
+        <input type="date" class="txt" name="added_on">
+        <input type="file" class="img_upload" name="product_img">
+
+        <button class="btn" value="Add">Add product</button>
+
+      </form>
+    </section>
+
+    <section id="image__container">
+
+    </section>
+
+
+  </div>
+
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // Get all "navbar-burger" elements
+      const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+      // Check if there are any navbar burgers
+      if ($navbarBurgers.length > 0) {
+
+        // Add a click event on each of them
+        $navbarBurgers.forEach(el => {
+          el.addEventListener('click', () => {
+
+            // Get the target from the "data-target" attribute
+            const target = el.dataset.target;
+            const $target = document.getElementById(target);
+
+            // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+            el.classList.toggle('is-active');
+            $target.classList.toggle('is-active');
+
+          });
+        });
+      }
+
+    });
+  </script>
+</body>
+</html>
+
+
+

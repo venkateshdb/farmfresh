@@ -1,5 +1,9 @@
 *.env
 *.db
 *.pyc
+run.py
+*.crt
+*.key
+migrations/*
 flask_session/*
 __pycache__/*
