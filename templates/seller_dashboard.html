@@ -55,14 +55,14 @@
                 <div class="card-content">
                   <div class="content">
                     <div class="tags">
-                      <span class="tag is-light is-primary">Id: {{ product.product_id }}</span>
+                      <!--NOT in production<span class="tag is-light is-primary">Id: {{ product.product_id }}</span>-->
                       <span class="tag is-light is-primary">Grains</span>
                     </div>
                     <p class="title">{{product.product_name}}</p>
                     <p class="subtitle">Qty(Kg): {{ product.product_qty }}</p>
                     <p class="subtitle">Added on: {{product.product_date}}</p>
                     <p class="subtitle">Price: {{product.product_price}} / kg</p>
-                    <button class="button is-danger is-outlined" data-id={{product.product_id}}>
+                    <button class="button is-danger is-outlined remove" data-id={{product.product_id}}>
                       <span>Remove Product</span>
                       <span class="icon is-small">
                         <i class="fas fa-times"></i>
