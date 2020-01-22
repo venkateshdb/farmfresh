@@ -286,7 +286,7 @@ def verify():
 
                 # only for password reset case
                 if session.get("new_password") != None:
-                    Seller.query.filter_by(phone_num=sess_phone, seller_id=user_id).update({
+                    Seller.query.filter_by(phone_num=sess_phone).update({
                         "password":
                         session.get("new_password")
                     })
@@ -315,8 +315,9 @@ def verify():
 
 @app.route("/seller_dashboard", methods=["GET", "POST"])
 def seller_dashboard():
-    if(session.get("logged_in") == False and session.get("type") != "seller"):
+    if(session.get("logged_in") == False and (session.get("type") != "seller")):
         abort(400)
+        
    
     # getting session variable
     user_id = session.get("user_id")
@@ -340,7 +341,7 @@ def buyer_dashboard():
     """
     show products available on marketplace
     """
-    if(session.get("logged_in") == False and session.get("type") != "buyer"):
+    if(session.get("logged_in") == False and (session.get("type") != "buyer")):
         abort(400)
    
     # getting session variable
