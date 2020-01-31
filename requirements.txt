@@ -1,4 +1,4 @@
-requests==2.13.0
+requests==2.20.0
 twilio==6.35.2
 Flask==1.0.2
 Flask_Session==0.3.1
